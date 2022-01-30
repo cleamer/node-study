@@ -32,7 +32,18 @@ async function getPosts() {
           console.error(err);
         }
       });
-      postLi.append(span, edit, remove);
+      const check = document.createElement("button");
+      check.textContent = "보기";
+      check.addEventListener("click", async () => {
+        try {
+          const post = await axios.get(`/post/${key}`);
+          const data = post.data;
+          alert(`Title: ${data.title}\nDiscription: ${data.discription}`);
+        } catch (err) {
+          console.error(err);
+        }
+      });
+      postLi.append(span, check, edit, remove);
       list.appendChild(postLi);
     });
   } catch (err) {

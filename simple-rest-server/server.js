@@ -19,6 +19,11 @@ const server = http.createServer(async (req, res) => {
       } else if (req.url === "/posts") {
         res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
         return res.end(JSON.stringify(posts));
+      } else if (req.url.startsWith("/post/")) {
+        const key = req.url.split("/")[2];
+        const post = posts[key];
+        res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+        return res.end(JSON.stringify(post));
       }
       try {
         const data = await fs.readFile(`./${req.url}`);
