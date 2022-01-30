@@ -52,7 +52,7 @@ const server = http.createServer(async (req, res) => {
           body += chunk;
         });
         return req.on("end", () => {
-          posts[key] = { title: JSON.parse(body).title }; //
+          posts[key] = JSON.parse(body);
           res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
           res.end("ok");
         });
