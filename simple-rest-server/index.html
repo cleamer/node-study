@@ -3,20 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <title>RESTful SERVER</title>
-    <!-- <link rel="stylesheet" href="./style.css" /> -->
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <nav>
       <a href="/">Home</a>
       <a href="/about">About</a>
     </nav>
-    <div>
-      <form id="form">
-        <input type="text" id="username" />
-        <button type="submit">등록</button>
-      </form>
-    </div>
-    <div id="list"></div>
+    <main>
+      <div>
+        <form id="form">
+          <input type="text" id="title" placeholder="Title" />
+          <textarea name="discription" id="discription" cols="30" rows="10" placeholder="Discription"></textarea>
+          <button type="submit">등록</button>
+        </form>
+      </div>
+      <ul id="list"></ul>
+    </main>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="./front.js"></script>
   </body>

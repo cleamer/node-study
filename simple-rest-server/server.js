@@ -3,7 +3,7 @@ const fs = require("fs").promises;
 
 const PORT = 8080;
 
-const users = {};
+const posts = {};
 
 const server = http.createServer(async (req, res) => {
   try {
@@ -16,9 +16,9 @@ const server = http.createServer(async (req, res) => {
         const data = await fs.readFile("./about.html");
         res.writeHead(200, { "Content-Type": "text/html; charset=utf-8" });
         return res.end(data);
-      } else if (req.url === "/users") {
+      } else if (req.url === "/posts") {
         res.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
-        return res.end(JSON.stringify(users));
+        return res.end(JSON.stringify(posts));
       }
       try {
         const data = await fs.readFile(`./${req.url}`);
@@ -27,36 +27,35 @@ const server = http.createServer(async (req, res) => {
         console.error(err);
       }
     } else if (req.method === "POST") {
-      if (req.url === "/user") {
+      if (req.url === "/post") {
         let body = "";
         req.on("data", (chunk) => {
           body += chunk;
         });
         return req.on("end", () => {
-          console.log("POST: " + body);
           const key = Date.now();
-          users[key] = JSON.parse(body).name;
+          posts[key] = JSON.parse(body);
           res.writeHead(201, { "Content-Type": "text/plain; charset=utf-8" });
           res.end("ok");
         });
       }
     } else if (req.method === "PUT") {
-      if (req.url.startsWith("/user/")) {
+      if (req.url.startsWith("/post/")) {
         const key = req.url.split("/")[2];
         let body = "";
         req.on("data", (chunk) => {
           body += chunk;
         });
         return req.on("end", () => {
-          users[key] = JSON.parse(body).name;
+          posts[key] = { title: JSON.parse(body).title }; //
           res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
           res.end("ok");
         });
       }
     } else if (req.method === "DELETE") {
-      if (req.url.startsWith("/user/")) {
+      if (req.url.startsWith("/post/")) {
         const key = req.url.split("/")[2];
-        delete users[key];
+        delete posts[key];
         res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
         return res.end("ok");
       }

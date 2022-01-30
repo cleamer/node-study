@@ -1,22 +1,23 @@
-async function getUsers() {
+async function getPosts() {
   try {
-    const res = await axios.get("/users");
-    const users = res.data;
-    console.log(users); // test
+    const res = await axios.get("/posts");
+    const posts = res.data;
     const list = document.getElementById("list");
     list.innerText = "";
-    Object.keys(users).map((key) => {
-      const userDiv = document.createElement("div");
+    Object.keys(posts).map((key) => {
+      const postLi = document.createElement("li");
       const span = document.createElement("span");
-      span.textContent = users[key];
+      span.textContent = posts[key].title;
       const edit = document.createElement("button");
       edit.textContent = "수정";
       edit.addEventListener("click", async () => {
-        const name = prompt("이름을 입력하세요.");
-        if (!name) return alert("이름을 반드시 입력하세요.");
+        const title = prompt("제목을 입력하세요.");
+        if (!title) return alert("이름을 반드시 입력하세요.");
+        const discription = prompt("내용을 입력하세요.");
+        if (!discription) return alert("내용을 반드시 입력하세요.");
         try {
-          await axios.put(`/user/${key}`, { name });
-          getUsers();
+          await axios.put(`/post/${key}`, { title, discription });
+          getPosts();
         } catch (err) {
           console.error(err);
         }
@@ -25,29 +26,31 @@ async function getUsers() {
       remove.textContent = "삭제";
       remove.addEventListener("click", async () => {
         try {
-          await axios.delete(`/user/${key}`);
-          getUsers();
+          await axios.delete(`/post/${key}`);
+          getPosts();
         } catch (err) {
           console.error(err);
         }
       });
-      userDiv.append(span, edit, remove);
-      list.appendChild(userDiv);
+      postLi.append(span, edit, remove);
+      list.appendChild(postLi);
     });
   } catch (err) {
     console.error(err);
   }
 }
 
-window.onload = getUsers;
+window.onload = getPosts;
 
 document.getElementById("form").addEventListener("submit", async (e) => {
   e.preventDefault();
-  const name = e.target.username.value;
-  if (!name) return alert("이름을 입력하세요.");
+  const title = e.target.title.value;
+  const discription = e.target.discription.value;
+
+  if (!title) return alert("이름을 입력하세요.");
   try {
-    await axios.post("/user", { name });
-    getUsers();
+    await axios.post("/post", { title, discription });
+    getPosts();
   } catch (err) {
     console.error(err);
   }
