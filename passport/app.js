@@ -49,12 +49,12 @@ app.use(passport.session());
 
 // 세션 스토어에 유저 식별자와 쿠키 쌍 저장(로그인시 한번 호출)
 passport.serializeUser(function (user, cb) {
-  console.log('serializeUser');
+  console.log('---- serializeUser');
   cb(null, user.id);
 });
 // 로그인 한 후 쿠키를 세션과 대조해 유저 정보 꺼내기
 passport.deserializeUser(function (id, cb) {
-  console.log('deserializeUser');
+  console.log('---- deserializeUser');
   const user = userFinder('id', id);
   return user ? cb(null, user) : cb(null, false, console.log('no user'));
 });
@@ -62,7 +62,7 @@ passport.deserializeUser(function (id, cb) {
 // 로그인 로직
 passport.use(
   new LocalStrategy({ usernameField: 'id', passwordField: 'pw' }, (username, password, cb) => {
-    console.log('LocalStrategy callback');
+    console.log('---- LocalStrategy callback');
     const user = userFinder('id', username);
     if (user) {
       if (user.pw === password) return cb(null, user);
@@ -71,37 +71,50 @@ passport.use(
   })
 );
 
-// 로그인 성공 혹은 실패 시 처리
+// login 성공/실패 로직
 app.post(
   '/auth/login',
   passport.authenticate('local', {
+    // successRedirect: '/mypage',
     failureRedirect: '/login',
-    failureMessage: true,
   }),
   (req, res) => {
-    console.log('/post/login -> render mypage');
-    res.locals.user = req.user;
-    res.render('mypage');
+    console.log('---- /aouth/login callback');
+    res.redirect('/mypage');
   }
 );
 app.get('/auth/logout', (req, res) => {
   req.logout();
   req.session.destroy();
-  res.redirect('/');
+  return res.redirect('/');
 });
 
 app.get('/login', (req, res) => {
-  res.render('login');
+  return res.render('login');
 });
 app.get('/mypage', (req, res) => {
+  console.log('---- /mypage');
   res.locals.user = req.user;
-  res.render('mypage');
+  return res.render('mypage');
 });
 
 app.get('/', (req, res) => {
+  console.log('---- /');
   res.locals.isLoggedIn = !!req.user;
   res.locals.user = req.user;
-  res.render('index');
+  return res.render('index');
 });
 
+// Error exception
+app.use((req, res, next) => {
+  const err = new Error(`${req.method} ${req.url} Not Found.`);
+  err.status = 404;
+  next(err);
+});
+
+app.use((err, req, res, next) => {
+  res.locals.message = err.message;
+  res.locals.error = process.env.NODE_ENV !== 'production' ? err : {};
+  res.status(err.status || 500).render('error');
+});
 app.listen(8080, () => console.log('Server is running port 8080'));
