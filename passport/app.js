@@ -80,7 +80,7 @@ app.post(
   }),
   (req, res) => {
     console.log('---- /aouth/login callback');
-    res.redirect('/mypage');
+    return res.redirect('/mypage');
   }
 );
 app.get('/auth/logout', (req, res) => {
@@ -88,10 +88,23 @@ app.get('/auth/logout', (req, res) => {
   req.session.destroy();
   return res.redirect('/');
 });
+app.post('/auth/signin', (req, res) => {
+  const newUser = req.body;
+  const redundancy = userFinder('id', newUser.id);
+  if (redundancy) return res.redirect('/signin');
+  db.push(newUser);
+  return res.redirect('/login');
+});
 
 app.get('/login', (req, res) => {
-  return res.render('login');
+  res.locals.sginOrLog = 'login';
+  return res.render('idpw');
 });
+app.get('/signin', (req, res) => {
+  res.locals.sginOrLog = 'signin';
+  return res.render('idpw');
+});
+
 app.get('/mypage', (req, res) => {
   console.log('---- /mypage');
   res.locals.user = req.user;

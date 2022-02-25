@@ -7,13 +7,13 @@ html(lang="en")
     title Home
   body 
     h1 Home
-    h2= isLoggedIn ? user.nickname : ''
     if isLoggedIn
-      form(action="/mypage", method="get") 
-        input(type="submit", value="mypage")
-      form(action="/auth/logout", method="get") 
-        input(type="submit", value="Log Out")
+      h2= user.nickname  
+      form( method="get") 
+        input(type="submit", value="mypage", formaction="/mypage")
+        input(type="submit", value="Log Out", formaction="/auth/logout")
     else
-      form(action="/login", method="get") 
-        input(type="submit", value="Log In")
+      form( method="get") 
+        input(type="submit", value="Log In",formaction="/login")
+        input(type="submit", value="Sign In",formaction="/signin")
         
