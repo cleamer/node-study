@@ -37,14 +37,15 @@ const userFinder = (column, what) => {
   }
 };
 
-// Passport
-var passport = require('passport');
-var LocalStrategy = require('passport-local');
+/**
+ * Passport
+ */
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 // express에 passport 등록
 app.use(passport.initialize());
-
-// passport가 세션 제어
+// 요청의 쿠키의 connect.id로 세션 쿠키에서 id를 뽑아 deserializeUser로 전달
 app.use(passport.session());
 
 // 세션 스토어에 유저 식별자와 쿠키 쌍 저장(로그인시 한번 호출)
@@ -79,16 +80,19 @@ app.post(
     failureRedirect: '/login',
   }),
   (req, res) => {
-    console.log('---- /aouth/login callback');
+    console.log('---- /auth/login callback');
     return res.redirect('/mypage');
   }
 );
+
 app.get('/auth/logout', (req, res) => {
+  console.log('---- /auth/logout');
   req.logout();
   req.session.destroy();
   return res.redirect('/');
 });
 app.post('/auth/signin', (req, res) => {
+  console.log('---- /auth/signin');
   const newUser = req.body;
   const redundancy = userFinder('id', newUser.id);
   if (redundancy) return res.redirect('/signin');
@@ -97,10 +101,12 @@ app.post('/auth/signin', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
+  console.log('---- /login');
   res.locals.sginOrLog = 'login';
   return res.render('idpw');
 });
 app.get('/signin', (req, res) => {
+  console.log('---- /signin');
   res.locals.sginOrLog = 'signin';
   return res.render('idpw');
 });
