@@ -7,19 +7,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// session
-const session = require('express-session');
-const FileStore = require('session-file-store')(session);
-
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    secret: 'session_secret',
-    store: new FileStore(),
-  })
-);
-
 // DB
 const db = [
   { id: 'myid', pw: 'mypw', nickname: 'cloer' },
@@ -36,6 +23,19 @@ const userFinder = (column, what) => {
     return false;
   }
 };
+
+// session
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
+
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: 'session_secret',
+    store: new FileStore(),
+  })
+);
 
 /**
  * Passport
@@ -72,9 +72,23 @@ passport.use(
   })
 );
 
-// login 성공/실패 로직
+/**
+ * Router
+ */
+
+// middleware
+const isLoggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) next();
+  else return res.redirect('/');
+};
+const isNotLoggedIn = (req, res, next) => {
+  if (!req.isAuthenticated()) next();
+  else return res.redirect('/');
+};
+
 app.post(
   '/auth/login',
+  isNotLoggedIn,
   passport.authenticate('local', {
     // successRedirect: '/mypage',
     failureRedirect: '/login',
@@ -85,13 +99,13 @@ app.post(
   }
 );
 
-app.get('/auth/logout', (req, res) => {
+app.get('/auth/logout', isLoggedIn, (req, res) => {
   console.log('---- /auth/logout');
   req.logout();
   req.session.destroy();
   return res.redirect('/');
 });
-app.post('/auth/signin', (req, res) => {
+app.post('/auth/signin', isNotLoggedIn, (req, res) => {
   console.log('---- /auth/signin');
   const newUser = req.body;
   const redundancy = userFinder('id', newUser.id);
@@ -100,18 +114,18 @@ app.post('/auth/signin', (req, res) => {
   return res.redirect('/login');
 });
 
-app.get('/login', (req, res) => {
+app.get('/login', isNotLoggedIn, (req, res) => {
   console.log('---- /login');
   res.locals.sginOrLog = 'login';
   return res.render('idpw');
 });
-app.get('/signin', (req, res) => {
+app.get('/signin', isNotLoggedIn, (req, res) => {
   console.log('---- /signin');
   res.locals.sginOrLog = 'signin';
   return res.render('idpw');
 });
 
-app.get('/mypage', (req, res) => {
+app.get('/mypage', isLoggedIn, (req, res) => {
   console.log('---- /mypage');
   res.locals.user = req.user;
   return res.render('mypage');
