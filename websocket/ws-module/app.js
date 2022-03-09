@@ -36,13 +36,13 @@ app.get('/newroom', (req, res) => {
 });
 app.post('/newroom', (req, res) => {
   const { title } = req.body;
-  const cid = req.sessionID + Date.now();
-  const db = app.get('db').push({ title, cid });
+  const roomId = req.sessionID + Date.now();
+  const db = app.get('db').push({ title, roomId });
 
-  return res.redirect(`/chat/${cid}`);
+  return res.redirect(`/chat/${roomId}`);
 });
-app.get('/chat/:cid', (req, res) => {
-  const room = app.get('db').find((room) => room.cid === req.params.cid);
+app.get('/chat/:roomId', (req, res) => {
+  const room = app.get('db').find((room) => room.roomId === req.params.roomId);
   res.locals.room = room;
   res.render('chat');
 });

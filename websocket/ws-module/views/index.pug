@@ -18,7 +18,7 @@ html(lang="en")
           tr 
             td=room.title 
             td 
-              form(action=`/chat/${room.cid}` method="get") 
+              form(action=`/chat/${room.roomId}` method="get") 
                 button(type='submit') 참여
               
     form(action="/newroom", method="get") 

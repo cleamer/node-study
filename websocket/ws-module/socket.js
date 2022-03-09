@@ -8,17 +8,21 @@ module.exports = (server) => {
       ws.on('message', (message) => {
         console.log(`room message: ${message}`);
       });
-
       ws.send('your in room!');
-    } else if (req.url === '/chat') {
+    } else if (req.url.startsWith('/chat/')) {
+      const roomId = req.url.split('/')[2];
+      ws.roomId = roomId;
       ws.on('message', (message) => {
-        console.log(`chat message: ${message}`);
+        wss.clients.forEach((client) => {
+          if (client !== ws && client.readyState === ws.OPEN && client.roomId === ws.roomId) client.send(message.toString());
+        });
       });
-      ws.send('your in chat!');
     }
 
     ws.on('error', (error) => console.error(error));
 
-    ws.on('close', () => console.log('close'));
+    ws.on('close', () => {
+      console.log('close');
+    });
   });
 };

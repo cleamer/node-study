@@ -3,6 +3,6 @@ ws.onopen = function () {
   console.log('room connect!');
 };
 ws.onmessage = function (event) {
-  console.log(event.data);
-  ws.send('room reply');
+  console.log(`room sent message: ${event.data}`);
+  // ws.send('room reply');
 };
