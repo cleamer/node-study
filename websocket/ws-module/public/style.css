@@ -24,6 +24,7 @@ button {
 }
 #chats {
   height: 600px;
+  overflow: scroll;
 }
 #type {
   display: flex;

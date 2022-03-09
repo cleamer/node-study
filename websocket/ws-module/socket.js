@@ -10,8 +10,7 @@ module.exports = (server) => {
       });
       ws.send('your in room!');
     } else if (req.url.startsWith('/chat/')) {
-      const roomId = req.url.split('/')[2];
-      ws.roomId = roomId;
+      ws.roomId = req.url.split('/')[2];
       ws.on('message', (message) => {
         wss.clients.forEach((client) => {
           if (client !== ws && client.readyState === ws.OPEN && client.roomId === ws.roomId) client.send(message.toString());
