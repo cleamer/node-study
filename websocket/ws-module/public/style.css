@@ -1,9 +1,79 @@
 #chatrooms {
   margin: 10px 0;
   width: 500px;
-  background-color: tomato;
+  text-align: center;
+}
+table,
+td,
+th {
+  border: 0.1px solid black;
+  border-collapse: collapse;
 }
 
 button {
   margin: 5px;
+}
+
+#chat_view {
+  width: 500px;
+  height: 650px;
+  background-color: coral;
+  border: 0.5px solid black;
+  padding: 10px;
+  border-radius: 6px;
+}
+#chats {
+  height: 600px;
+}
+#type {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+#type input {
+  height: 50px;
+  width: 80%;
+  font-size: 18px;
+  border-radius: 25px;
+  border: none;
+  box-shadow: inset 0 0 5px black;
+  padding: 10px 20px;
+  box-sizing: border-box;
+}
+#type input:focus {
+  outline: none;
+}
+#type button {
+  position: absolute;
+  padding: 10px;
+  border-radius: 50px;
+  border: none;
+  box-shadow: inset 0 0 3px black;
+  right: 50px;
+  top: 3px;
+  background-color: white;
+  transition: 0.2s all;
+}
+
+#type button:hover {
+  background-color: bisque;
+  transform: scale(0.9);
+}
+.chat {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+.mychat {
+  justify-content: flex-end;
+}
+.yourchat {
+  justify-content: flex-start;
+}
+.text {
+  background-color: yellow;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 15px;
 }

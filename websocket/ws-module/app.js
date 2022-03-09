@@ -28,7 +28,6 @@ app.set('db', new Array());
 
 app.get('/', (req, res) => {
   res.locals.rooms = app.get('db');
-  console.log(app.get('db'));
   return res.render('index');
 });
 

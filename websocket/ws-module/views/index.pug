@@ -4,7 +4,7 @@ html(lang="en")
     meta(charset="UTF-8")
     meta(http-equiv="X-UA-Compatible", content="IE=edge")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    link(rel="stylesheet", href="style.css")
+    link(rel="stylesheet", href="/style.css")
     title Home
   body 
     h1 index.pug
@@ -13,12 +13,16 @@ html(lang="en")
         tr 
           th 이름
           th 참여 
-      tbody 
+      tbody#room_list
         each room in rooms
           tr 
             td=room.title 
-            td=room.memberCount
+            td 
+              form(action=`/chat/${room.cid}` method="get") 
+                button(type='submit') 참여
+              
     form(action="/newroom", method="get") 
       button(type="submit") 방 만들기
+    
+    script(src="/index.js") 
 
-    script(src="client.js") 
