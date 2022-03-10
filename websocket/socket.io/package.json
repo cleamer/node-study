@@ -1,7 +1,7 @@
 {
-  "name": "ws-module",
+  "name": "socket.io",
   "version": "1.0.0",
-  "description": "ws module study",
+  "description": "socket.io study",
   "main": "index.js",
   "scripts": {
     "start": "nodemon app.js"
@@ -11,13 +11,10 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.3",
-    "express-session": "^1.17.2",
     "morgan": "^1.10.0",
-    "pug": "^3.0.2",
-    "ws": "^8.5.0"
+    "pug": "^3.0.2"
   },
   "devDependencies": {
-    "eslint": "^8.10.0",
     "nodemon": "^2.0.15"
   }
 }
