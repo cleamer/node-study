@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
 const session = require('express-session');
-const { WebSocketServer } = require('ws');
 
 const app = express();
 app.set('port', process.env.PORT || 8003);
@@ -25,29 +24,33 @@ app.use(
 );
 
 // dummy DB
-app.set('db', new Array());
+app.set('db', { rooms: new Array(), users: new Array() });
 
 app.get('/', (req, res) => {
+  // TODO: add user
   return res.render('index');
 });
 
-app.get('/newroom', (req, res) => {
-  return res.render('new');
-});
+app.get('/newroom', (req, res) => res.render('new'));
+
 app.post('/newroom', (req, res) => {
   const { title } = req.body;
   const roomId = req.sessionID + Date.now();
-  app.get('db').push({ title, roomId });
+  const { rooms } = app.get('db');
+  rooms.push({ title, roomId });
 
   // 채팅방 새로 생성시 홈에 있는 사람들에게 새로은 방 목록 전송
-  // TODO: 본인은 왜 제외될까?
+  // Q?: 본인은 왜 제외될까?
+  // A!: 나는 현재 연결된 소켓이 없는상태임 home에서 newroom 으로 갈때 connection이 끊어지고
+  //     redirectfh /chat/:romid로 가야 connection을 연결함
   app.get('wss').clients.forEach((client) => {
-    if (client.location === 'index' && client.readyState === client.OPEN) client.send(JSON.stringify(app.get('db')));
+    if (client.location === 'index' && client.readyState === client.OPEN) client.send(JSON.stringify(rooms));
   });
   return res.redirect(`/chat/${roomId}`);
 });
+
 app.get('/chat/:roomId', (req, res) => {
-  const { title } = app.get('db').find((room) => room.roomId === req.params.roomId);
+  const { title } = app.get('db').rooms.find((room) => room.roomId === req.params.roomId);
   res.locals.title = title;
   res.render('chat');
 });

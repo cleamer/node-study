@@ -10,7 +10,7 @@ module.exports = (server, app) => {
       // home으로 돌아올 때 본인만 데이터 받기
       wss.clients.forEach((client) => {
         if (client === ws && client.readyState === ws.OPEN && client.location === 'index') {
-          client.send(JSON.stringify(app.get('db')));
+          client.send(JSON.stringify(app.get('db').rooms));
         }
       });
     } else if (req.url.startsWith('/chat/')) {
