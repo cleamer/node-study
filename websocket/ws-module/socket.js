@@ -22,7 +22,7 @@ module.exports = (server, app) => {
           // send message to
           // client.readyState === ws.OPEN: open sockets
           // client.roomId === ws.roomId: in my room
-          // client !== ws: whitout me
+          // client !== ws: without me
         });
       });
     }

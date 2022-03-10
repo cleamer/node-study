@@ -42,7 +42,7 @@ app.post('/newroom', (req, res) => {
   // 채팅방 새로 생성시 홈에 있는 사람들에게 새로은 방 목록 전송
   // TODO: 본인은 왜 제외될까?
   app.get('wss').clients.forEach((client) => {
-    if (client.location === 'index') client.send(JSON.stringify(app.get('db')));
+    if (client.location === 'index' && client.readyState === client.OPEN) client.send(JSON.stringify(app.get('db')));
   });
   return res.redirect(`/chat/${roomId}`);
 });
