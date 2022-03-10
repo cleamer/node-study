@@ -14,12 +14,12 @@ html(lang="en")
           th 이름
           th 참여 
       tbody#room_list
-        each room in rooms
-          tr 
-            td=room.title 
-            td 
-              form(action=`/chat/${room.roomId}` method="get") 
-                button(type='submit') 참여
+        //- each room in rooms
+        //-   tr 
+        //-     td=room.title 
+        //-     td 
+        //-       form(action=`/chat/${room.roomId}` method="get") 
+        //-         button(type='submit') 참여
               
     form(action="/newroom", method="get") 
       button(type="submit") 방 만들기

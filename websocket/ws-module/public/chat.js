@@ -18,6 +18,7 @@ ws.onopen = function () {
 };
 ws.onmessage = function (event) {
   const message = event.data;
+  console.log('message: ' + message);
   addChat(message, false);
 };
 
