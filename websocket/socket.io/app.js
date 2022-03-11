@@ -3,7 +3,7 @@ const path = require('path');
 const morgan = require('morgan');
 
 const app = express();
-app.set('port', process.env.PORT || 8003);
+app.set('port', process.env.PORT || 8004);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.use(morgan('dev'));

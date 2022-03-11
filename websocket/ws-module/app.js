@@ -42,7 +42,7 @@ app.post('/newroom', (req, res) => {
   // 채팅방 새로 생성시 홈에 있는 사람들에게 새로은 방 목록 전송
   // Q?: 본인은 왜 제외될까?
   // A!: 나는 현재 연결된 소켓이 없는상태임 home에서 newroom 으로 갈때 connection이 끊어지고
-  //     redirectfh /chat/:romid로 가야 connection을 연결함
+  //     redirect로 /chat/:roomId로 보내져야 chat.js에서 connection을 연결함
   app.get('wss').clients.forEach((client) => {
     if (client.location === 'index' && client.readyState === client.OPEN) client.send(JSON.stringify(rooms));
   });
