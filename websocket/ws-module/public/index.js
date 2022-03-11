@@ -22,12 +22,12 @@ const drawRooms = (rooms) => {
   }, roomList);
 };
 
-const ws = new WebSocket('ws://localhost:8003/room');
+const ws = new WebSocket('ws://localhost:8003/rooms');
 ws.onopen = function () {
-  console.log('room connect!');
+  console.log('rooms connect!');
 };
 ws.onmessage = function (event) {
-  console.log(`room sent message: ${event.data}`);
+  console.log(`rooms connection sent message: ${event.data}`);
   const rooms = JSON.parse(event.data);
   drawRooms(rooms);
 };

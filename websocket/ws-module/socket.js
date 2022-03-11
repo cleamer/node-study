@@ -2,27 +2,25 @@ const ws = require('ws');
 
 module.exports = (server, app) => {
   const wss = new ws.Server({ server });
-  app.set('wss', wss); // 새로 채팅방 생성시 express router에서 사용하기 위해
+  // for sending a rooms data when a new room is created
+  // used at app.post('newroom') on app.js
+  app.set('wss', wss);
 
   wss.on('connection', (ws, req) => {
-    if (req.url === '/room') {
+    if (req.url === '/rooms') {
       ws.location = 'index';
-      // home으로 돌아올 때 본인만 데이터 받기
-      wss.clients.forEach((client) => {
-        if (client === ws && client.readyState === ws.OPEN && client.location === 'index') {
-          client.send(JSON.stringify(app.get('db').rooms));
-        }
-      });
+      // get a data when into index
+      ws.send(JSON.stringify(app.get('db').rooms));
     } else if (req.url.startsWith('/chat/')) {
       ws.location = req.url.split('/')[2];
       ws.on('message', (message) => {
-        // 같은 채팅방의 본인을 제외한 사람에게 채팅 전송
+        // send message to open sockets in my room without me
         wss.clients.forEach((client) => {
           if (client !== ws && client.readyState === ws.OPEN && client.location === ws.location) client.send(message.toString());
           // send message to
-          // client.readyState === ws.OPEN: open sockets
-          // client.roomId === ws.roomId: in my room
-          // client !== ws: without me
+          // open sockets (client.readyState === ws.OPEN)
+          // in my room (client.roomId === ws.roomId)
+          // without me (client !== ws)
         });
       });
     }

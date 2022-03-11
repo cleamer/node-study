@@ -11,14 +11,14 @@ const addChat = (message, didIsend) => {
   chatBox.scrollTop = chatBox.scrollHeight;
 };
 
-const pathname = window.location.pathname;
+const pathname = window.location.pathname; // '/chat/:roomId'
 const ws = new WebSocket(`ws://localhost:8003${pathname}`);
 ws.onopen = function () {
   console.log('chat connect!');
 };
 ws.onmessage = function (event) {
   const message = event.data;
-  console.log('message: ' + message);
+  console.log('chat connection message: ' + message);
   addChat(message, false);
 };
 
