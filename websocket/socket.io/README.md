@@ -19,7 +19,7 @@ It's a web chat applicaion using socket.io.
 
 - NodeJS(express)
 - MySQL
-- sequlize
+- sequelize
 - socket.io
 - passport.js
 - pug
