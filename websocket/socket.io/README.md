@@ -1,4 +1,4 @@
-# My Chat
+# Cloer Chat
 
 It's a web chat applicaion using socket.io.
 
@@ -19,7 +19,6 @@ It's a web chat applicaion using socket.io.
 
 - NodeJS(express)
 - MySQL
-- sequelize
 - socket.io
 - passport.js
 - pug
