@@ -20,9 +20,12 @@ module.exports = function () {
   const app = express();
 
   app.set('port', process.env.PORT || 8004);
+  app.set('views', path.join(process.cwd(), 'views'));
+  app.set('view engine', 'pug');
 
   app.use(morgan('dev'));
   // app.use(cors());
+  app.use(express.static(path.join(process.cwd(), 'public')));
   app.use(express.json());
   app.use(express.urlencoded({ extended: false }));
   app.use(cookieParser(process.env.COOKIE_SECRET));
