@@ -1,0 +1,11 @@
+.room-list
+  for i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    div.room-list__row
+      span= `일이삼사오육칠팔구십일이삼사오육칠팔구십일이삼사오`
+      span= `${i}/20`
+  //- each room in rooms
+  //-   tr 
+  //-     td=room.title 
+  //-     td 
+  //-       form(action=`/chat/${room.roomId}` method="get") 
+  //-         button(type='submit') 참여

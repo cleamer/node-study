@@ -29,25 +29,7 @@ It's a web chat applicaion using socket.io.
 # File structure
 
 ```
-.
-├── README.md
-├── app.js
-├── config
-│   └── config.json
-├── migrations
-├── models
-│   ├── chat.js
-│   ├── index.js
-│   ├── room.js
-│   ├── user.js
-│   └── userRoom.js
-├── package-lock.json
-├── package.json
-├── public
-├── seeders
-└── views
-    ├── error.pug
-    └── index.pug
+ing ...
 ```
 
 <br>
@@ -59,3 +41,5 @@ It's a web chat applicaion using socket.io.
 <br>
 
 # TODO
+
+☑️ iframe -> socket live and sigle page

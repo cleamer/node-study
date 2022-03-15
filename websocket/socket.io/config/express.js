@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
@@ -9,9 +10,8 @@ const passportConfig = require('./passport');
 const passport = passportConfig();
 
 // Routers
-const homeRouter = require('../src/routers/home/homeRouter');
+const pageRouter = require('../src/routers/pages/pageRouter');
 const authRouter = require('../src/routers/auth/authRouter');
-const chatRouter = require('../src/routers/chat/chatRouter');
 
 // Error Exception
 const errorRouter = require('../src/routers/error/errorRouter');
@@ -46,9 +46,8 @@ module.exports = function () {
   app.use(passport.session());
 
   // Routers
-  app.use('/', homeRouter);
+  app.use('/', pageRouter);
   app.use('/auth', authRouter);
-  app.use('/chat', chatRouter);
 
   // Error Exception
   app.use(errorRouter);
